@@ -1,0 +1,2 @@
+class LinkIntentsController < ApplicationController
+end
