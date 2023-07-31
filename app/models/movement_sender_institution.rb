@@ -1,0 +1,2 @@
+class MovementSenderInstitution < ApplicationRecord
+end

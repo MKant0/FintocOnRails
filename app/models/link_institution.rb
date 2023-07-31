@@ -1,0 +1,2 @@
+class LinkInstitution < ApplicationRecord
+end

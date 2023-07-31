@@ -1,0 +1,2 @@
+class MovementSenderAccount < ApplicationRecord
+end

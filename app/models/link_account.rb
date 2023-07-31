@@ -1,0 +1,2 @@
+class LinkAccount < ApplicationRecord
+end
