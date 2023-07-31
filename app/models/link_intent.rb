@@ -1,0 +1,2 @@
+class LinkIntent < ApplicationRecord
+end
