@@ -1,2 +1,18 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<%= form_with url: link_intents_path, method: :post, local: true do |form| %>
+  <div>
+    <%= form.label :product %>
+    <%= form.select :product, ['movements'], {}, required: true %>
+  </div>
+
+  <div>
+    <%= form.label :country %>
+    <%= form.select :country, ['cl'], {}, required: true %>
+  </div>
+
+  <div>
+    <%= form.label :holder_type %>
+    <%= form.select :holder_type, ['individual', 'business'], {}, required: true %>
+  </div>
+
+  <%= form.submit "Create Link Intent" %>
+<% end %>

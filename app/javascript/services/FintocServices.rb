@@ -2,6 +2,29 @@ require 'fintoc'
 require 'dotenv/load'
 
 class FintocServices
+
+  def create_link_intent
+    uri = URI("https://api.fintoc.com/v1/link_intents")
+
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+
+    request = Net::HTTP::Post.new(uri)
+    request["accept"] = 'application/json'
+    request["Authorization"] = ENV['FINTOC_API_KEY']
+    request["content-type"] = 'application/json'
+    request.body = {
+      "product" => "movements",
+      "country" => "cl",
+      "holder_type" => "business"
+    }.to_json
+
+    response = http.request(request)
+    response_body = JSON.parse(response.body)
+
+    response_body["widget_token"]
+  end
+
   def initialize
     @fintoc_client = Fintoc::Client.new(ENV['FINTOC_API_KEY'])
   end
