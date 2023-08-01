@@ -2,29 +2,31 @@ require 'net/http'
 
 class LinkIntentsController < ApplicationController
   def create
-    product = params[:product]
-    country = params[:country]
-    holder_type = params[:holder_type]
+    @link_intent = LinkIntent.new(link_intent_params)
+    @link_intent.id_user = current_user.id
 
-    response_body = create_link_intent(product, country, holder_type)
-
-    @link_intent = LinkIntent.new(
-      widget_token: response_body["widget_token"],
-      product: product,
-      country: country,
-      holder_type: holder_type,
-      id_user: current_user.id, # Asume que tienes un método current_user que devuelve el usuario actual
-      created_at: Time.now
-    )
-
-    if @link_intent.save
-      # Aquí puedes redirigir al usuario o hacer lo que necesites después de guardar el intento de enlace
-    else
-      # Aquí puedes manejar el caso en que el intento de enlace no se pueda guardar
+    respond_to do |format|
+      if @link_intent.save
+        create_link_intent(@link_intent.product, @link_intent.country, @link_intent.holder_type)
+        format.html { redirect_to link_intent_path(@link_intent) }
+        format.json { render :show, status: :created, location: @link_intent }
+      else
+        format.html { render :new }
+        format.json { render json: @link_intent.errors, status: :unprocessable_entity }
+      end
     end
   end
 
+  def show
+    @link_intent = LinkIntent.find(params[:id])
+  end
+
+
   private
+
+  def link_intent_params
+    params.require(:link_intent).permit(:product, :country, :holder_type)
+  end
 
   def create_link_intent(product, country, holder_type)
     uri = URI("https://api.fintoc.com/v1/link_intents")

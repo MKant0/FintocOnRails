@@ -1,17 +1,17 @@
 <%= form_with url: link_intents_path, method: :post, local: true do |form| %>
   <div>
-    <%= form.label :product %>
-    <%= form.select :product, ['movements'], {}, required: true %>
+    <%= form.label 'link_intent[product]' %>
+    <%= form.select 'link_intent[product]', ['movements'], {}, required: true %>
   </div>
 
   <div>
-    <%= form.label :country %>
-    <%= form.select :country, ['cl'], {}, required: true %>
+    <%= form.label 'link_intent[country]' %>
+    <%= form.select 'link_intent[country]', ['cl'], {}, required: true %>
   </div>
 
   <div>
-    <%= form.label :holder_type %>
-    <%= form.select :holder_type, ['individual', 'business'], {}, required: true %>
+    <%= form.label 'link_intent[holder_type]' %>
+    <%= form.select 'link_intent[holder_type]', ['individual', 'business'], {}, required: true %>
   </div>
 
   <%= form.submit "Create Link Intent" %>

@@ -9,6 +9,7 @@ export default class extends Controller {
   loadFintoc() {
     const script = document.createElement('script')
     script.src = 'https://js.fintoc.com/v1/'
+    script.onerror = () => console.error("Failed to load Fintoc script")
     script.onload = () => this.initFintoc()
     document.head.appendChild(script)
   }
@@ -21,18 +22,25 @@ export default class extends Controller {
     console.log("Public key: ", publicKey);
     console.log("Widget token: ", widgetToken);
 
-    if (!widgetToken) {
-      console.log("Widget token not found");
-      return;
+    try {
+      this.createFintocWidget(publicKey, widgetToken);
+    } catch (error) {
+      console.error("Failed to create Fintoc widget", error);
     }
+  }
 
+  createFintocWidget(publicKey, widgetToken) {
     const widget = Fintoc.create({
       publicKey: publicKey,
       widgetToken: widgetToken,
-      onSuccess: function(linkIntent) {
-        const exchangeToken = linkIntent.exchangeToken;
-        // Aquí puedes hacer lo que necesites con el exchangeToken
-      }
+      onSuccess: this.handleSuccess,
+      // ... other options
     });
+    widget.open();
+  }
+
+  handleSuccess(linkIntent) {
+    const exchangeToken = linkIntent.exchangeToken;
+    // Aquí puedes hacer lo que necesites con el exchangeToken
   }
 }

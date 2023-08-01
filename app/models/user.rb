@@ -8,4 +8,5 @@ class User < ApplicationRecord
   has_many :links
   has_many :movements
   has_many :payment_intents
+  has_many :link_intents
 end
