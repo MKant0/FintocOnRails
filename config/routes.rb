@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     resources :movements
   end
 
-  resources :link_intents, only: [:create, :show]
+  resources :link_intents, only: [:new, :create, :show]
   resources :payments, only: [:create]
   resources :institutions, only: [:index, :show]
   resources :account_balances, only: [:index, :show]

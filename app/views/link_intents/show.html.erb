@@ -1,20 +1,17 @@
-<body>
-  <div data-controller="fintoc" data-fintoc-public-key="<%= ENV['FINTOC_PUBLIC_KEY'] %>" data-fintoc-widget-token="<%= @link_intent.widget_token %>">
-    <!-- Resto del contenido del body -->
-  </div>
-</body>
+<%# Asegúrate de que esta etiqueta de script esté en la página donde quieres usar el widget. %>
+<script src="https://js.fintoc.com/v1/"></script>
+
 <script>
   document.addEventListener('DOMContentLoaded', (event) => {
-    const fintocElement = document.querySelector('[data-controller="fintoc"]');
-    const publicKey = fintocElement.dataset.fintocPublicKey;
-    const widgetToken = fintocElement.dataset.fintocWidgetToken;
+    const widget = Fintoc.create({
+      widgetToken: '<%= @link_intent.widget_token %>',
+      publicKey: 'pk_test_xwUGiHD3-zsftKEioAvCGjAk6qQrTS65',
+      holderType: '<%= @link_intent.holder_type %>',
+      product: '<%= @link_intent.product %>',
+      onSuccess: () => { console.log('Link Intent Finished'); },
+      onExit: () => { console.log('Link Intent Failed or Canceled'); },
+    });
 
-    console.log('Public Key:', publicKey);
-    console.log('Widget Token:', widgetToken);
-
-    const fintoc = new Fintoc(publicKey);
-
-    fintoc.link({ token: widgetToken });
+    widget.open();
   });
 </script>
-
