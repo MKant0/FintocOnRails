@@ -23,9 +23,31 @@
       onSuccess: (linkIntent) => {
         console.log('Link Intent Finished');
         console.log('linkIntent:', linkIntent);
+
+        // Send AJAX request to create ExchangeToken
+        fetch('/exchange_tokens', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            // Add your Rails CSRF token here
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+          },
+          body: JSON.stringify({
+            exchange_token: {
+              token: linkIntent.exchangeToken,
+              link_intent_id: "<%= @link_intent.id %>"
+            }
+          })
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch((error) => {
+          console.error('Error:', error);
+        });
       },
       onExit: () => {
-        console.log('Link Intent Failed or Canceled');
+        // Redirige al usuario a la página de índice de exchange_tokens cuando el widget se cierra
+        window.location.href = "/exchange_tokens";
       },
     });
 

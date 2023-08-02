@@ -12,4 +12,6 @@ Rails.application.routes.draw do
   resources :payments, only: [:create]
   resources :institutions, only: [:index, :show]
   resources :account_balances, only: [:index, :show]
+  resources :exchange_tokens, only: [:create, :index]
+
 end

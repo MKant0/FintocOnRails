@@ -1,0 +1,18 @@
+<h1>Exchange Tokens</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Token</th>
+      <th>Link Intent ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @exchange_tokens.each do |exchange_token| %>
+      <tr>
+        <td><%= exchange_token.token %></td>
+        <td><%= exchange_token.link_intent_id %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
