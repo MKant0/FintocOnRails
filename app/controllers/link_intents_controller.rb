@@ -7,20 +7,23 @@ class LinkIntentsController < ApplicationController
 
     respond_to do |format|
       if @link_intent.save
-        create_link_intent(@link_intent.product, @link_intent.country, @link_intent.holder_type)
-        format.html { redirect_to link_intent_path(@link_intent) }
-        format.json { render :show, status: :created, location: @link_intent }
+        begin
+          response_body = create_link_intent(@link_intent.product, @link_intent.country, @link_intent.holder_type)
+          # Aquí puedes actualizar @link_intent con cualquier dato que quieras de response_body
+          # Por ejemplo: @link_intent.update!(widget_token: response_body["widget_token"])
+          format.html { redirect_to link_intent_path(@link_intent), notice: 'LinkIntent was successfully created.' }
+          format.json { render :show, status: :created, location: @link_intent }
+        rescue => e
+          # Aquí puedes manejar el error como quieras. Por ejemplo, podrías mostrar un mensaje de error al usuario.
+          format.html { render :new, alert: "Hubo un error al crear el Link Intent: #{e.message}" }
+          format.json { render json: { error: "Hubo un error al crear el Link Intent: #{e.message}" }, status: :unprocessable_entity }
+        end
       else
         format.html { render :new }
         format.json { render json: @link_intent.errors, status: :unprocessable_entity }
       end
     end
   end
-
-  def show
-    @link_intent = LinkIntent.find(params[:id])
-  end
-
 
   private
 
@@ -47,6 +50,16 @@ class LinkIntentsController < ApplicationController
     response = http.request(request)
     response_body = JSON.parse(response.body)
 
+    # Actualiza @link_intent con los datos de la respuesta
+    @link_intent.update!(
+      object: response_body["object"],
+      widget_token: response_body["widget_token"],
+      mode: response_body["mode"],
+      status: response_body["status"]
+      # Agrega aquí cualquier otro campo que quieras guardar
+    )
+
     response_body
   end
+
 end
