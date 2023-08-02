@@ -28,7 +28,7 @@ class LinkIntentsController < ApplicationController
   def show
     @link_intent = LinkIntent.find(params[:id])
   end
-  
+
   private
 
   def link_intent_params

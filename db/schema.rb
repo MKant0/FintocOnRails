@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_31_113818) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_02_154723) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -36,6 +36,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_31_113818) do
     t.integer "id_user"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "exchange_tokens", force: :cascade do |t|
+    t.string "token"
+    t.bigint "link_intent_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["link_intent_id"], name: "index_exchange_tokens_on_link_intent_id"
   end
 
   create_table "link_accounts", force: :cascade do |t|
@@ -191,4 +199,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_31_113818) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "exchange_tokens", "link_intents"
 end

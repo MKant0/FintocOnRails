@@ -3,15 +3,59 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', (event) => {
+    console.log('DOMContentLoaded event triggered');
+
+    const widgetToken = '<%= @link_intent.widget_token %>';
+    const publicKey = 'pk_test_xwUGiHD3-zsftKEioAvCGjAk6qQrTS65';
+    const holderType = '<%= @link_intent.holder_type %>';
+    const product = '<%= @link_intent.product %>';
+
+    console.log('widgetToken:', widgetToken);
+    console.log('publicKey:', publicKey);
+    console.log('holderType:', holderType);
+    console.log('product:', product);
+
     const widget = Fintoc.create({
-      widgetToken: '<%= @link_intent.widget_token %>',
-      publicKey: 'pk_test_xwUGiHD3-zsftKEioAvCGjAk6qQrTS65',
-      holderType: '<%= @link_intent.holder_type %>',
-      product: '<%= @link_intent.product %>',
-      onSuccess: () => { console.log('Link Intent Finished'); },
-      onExit: () => { console.log('Link Intent Failed or Canceled'); },
+      widgetToken: widgetToken,
+      publicKey: publicKey,
+      holderType: holderType,
+      product: product,
+      onSuccess: (linkIntent) => {
+        console.log('Link Intent Finished');
+        console.log('linkIntent:', linkIntent);
+
+        // Send AJAX request to create ExchangeToken
+        fetch('/exchange_tokens', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            // Add your Rails CSRF token here
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+          },
+          body: JSON.stringify({
+            exchange_token: {
+              token: linkIntent.exchangeToken,
+              link_intent_id: "<%= @link_intent.id %>"
+            }
+          })
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      },
+      onExit: () => {
+        // Redirige al usuario a la página de índice de exchange_tokens cuando el widget se cierra
+        window.location.href = "/exchange_tokens";
+      },
     });
 
+    console.log('Fintoc widget created:', widget);
+
     widget.open();
+
+    console.log('Fintoc widget opened');
   });
 </script>
+
