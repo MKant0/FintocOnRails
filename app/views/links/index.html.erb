@@ -1,0 +1,23 @@
+<h1>Links</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Holder ID</th>
+      <th>Link Token</th>
+      <!-- Agrega aquí las demás columnas que quieras mostrar -->
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @links.each do |link| %>
+      <tr>
+        <td><%= link.username %></td>
+        <td><%= link.holder_id %></td>
+        <td><%= link.link_token %></td>
+        <!-- Agrega aquí las demás columnas que quieras mostrar -->
+      </tr>
+    <% end %>
+  </tbody>
+</table>
