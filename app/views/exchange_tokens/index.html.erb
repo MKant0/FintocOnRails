@@ -1,6 +1,6 @@
 <h1>Exchange Tokens</h1>
 
-<table>
+<table class="table">
   <thead>
     <tr>
       <th>Token</th>
@@ -16,3 +16,12 @@
     <% end %>
   </tbody>
 </table>
+
+<div class="form-group">
+  <%= form_with url: user_links_path(current_user), method: :post do |form| %>
+    <%= form.label :exchange_token, "Exchange Token" %>
+    <%= form.text_field :exchange_token %>
+    <%= form.submit "Create Link" %>
+  <% end %>
+
+</div>

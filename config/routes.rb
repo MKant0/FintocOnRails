@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   resources :users do
     resources :accounts
-    resources :links
+    resources :links, only: [:index, :create]
     resources :movements
   end
 

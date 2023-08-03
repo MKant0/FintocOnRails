@@ -1,0 +1,15 @@
+<h1>Link Information</h1>
+
+<p>
+  <strong>Object:</strong>
+  <%= @link.object %>
+</p>
+
+<p>
+  <strong>Username:</strong>
+  <%= @link.username %>
+</p>
+
+<!-- Agrega más campos aquí según lo necesites -->
+
+<%= link_to 'Back to Links', user_links_path(current_user) %>
