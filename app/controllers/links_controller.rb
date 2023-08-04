@@ -5,7 +5,6 @@ class LinksController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    puts "params[:exchange_token]: #{params[:exchange_token]}"
     exchange_token = ExchangeToken.find_by(token: params[:exchange_token])
 
     if exchange_token.nil?
